@@ -1,0 +1,23 @@
+import numpy as np #відокремлення коренів
+import math
+def f(x):
+    return 3 * pow(x,4) - 4 * pow(x,3) + 2 * pow(x,2) - 4 * x – 1
+
+def find_unknown_segments():
+    search_segments_in_range = np.arange(-10, 10, 0.1)
+    a = None
+    previousx = None
+    currentx = None
+    segments = []
+    for x in search_segments_in_range:
+        currentx = f(x)
+        x = round(x, 5)
+        if previousx is not None and previousx * currentx < 0:
+            segments.append((a, x))
+        a = x
+        previousx = currentx 
+    return segments
+
+segments = find_unknown_segments()
+for a, b in segments:
+    print(f"Знайденний проміжок: ({a}, {b})")
