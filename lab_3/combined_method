@@ -1,0 +1,28 @@
+import numpy as np
+from scipy.misc import derivative
+
+def f(x):
+    return 3 * pow(x,4) - 4 * pow(x,3) + 2 * pow(x,2) - 4 * x - 1
+
+eps = 0.0001
+found_segments = [(-0.3,-0.2),(1.5,1.6)]
+
+def combined_method(f, a, b, eps): 
+    x_n = (a + b) / 2
+    while abs(f(x_n)) > eps:
+        derivative_a = derivative(f, a, dx = eps)
+        derivative_b = derivative(f, b, dx = eps)
+        x_n = a - f(a) * (b - a) / (f(b) - f(a))
+        if f(a) * f(x_n) < 0:
+            b = x_n
+        else:
+            a = x_n
+    return x_n
+for a, b in found_segments:
+    print(f"На відрізку [{a}, {b}] є такі розв'язки: ")
+    if f(a) * f(b) < 0:
+        root_combined = combined_method(f, a, b, eps)
+        if a <= root_combined <= b:
+            print('Комбінований метод:', round(root_combined, 5))
+    else:
+        print('На цьому відрізку корені відсутні')
