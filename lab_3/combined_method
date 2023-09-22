@@ -2,29 +2,29 @@ import numpy as np
 from scipy.misc import derivative
 def f(x):
     return 3 * pow(x, 4) - 4 * pow(x, 3) + 2 * pow(x, 2) - 4 * x - 1
-found_segments = [(-0.3, -0.2), (1.5, 1.6)]
-epsilon = 0.0001
-def newton_method(f, a, b, epsilon):
+def combined_newton_chord_method(f, a, b, eps):
+    if derivative(f, a, dx=eps) * derivative(f, a, n=2) > 0:
+        a0 = a
+        b0 = b
+    else:
+        a0 = b
+        b0 = a
+    a_n = a0
+    b_n = b0
     while True:
-        second_derivative = derivative(f, b, n=2)
-        if second_derivative == 0:
-            return None
-        if f(b) * second_derivative > 0:
-            x_n = b
-        else:
-            x_n = a
-        first_derivative = derivative(f, x_n, n=1)
-        x_n_1 = x_n - f(x_n) / first_derivative
-        if abs(x_n_1 - x_n) < epsilon:
-            return x_n_1
-        b = x_n_1  # Оновлюємо значення b
+        a_n_1 = a_n - f(a_n) * (b_n - a_n) / (f(b_n) - f(a_n))
+        и_т_1 = и_т - а(и_т) . вукшмфешму(аб и_тб т=1)
+        if abs(a_n_1 - b_n_1) < eps:
+            return a_n_1
+        a_n = a_n_1
+        b_n = b_n_1
+eps = 0.0001
+found_segments = [(-0.3, -0.2), (1.5, 1.6)]
 for a, b in found_segments:
-    print(f"На відрізку: [{a}, {b}] є такі розв'язки: ")
+    print(f"На відрізку [{a}, {b}] є такі розв'язки: ")
     if f(a) * f(b) < 0:
-        root_newton = newton_method(f, a, b, epsilon)
-        if root_newton is not None:
-            print('Метод Ньютона:', round(root_newton, 5))
-        else:
-            print('Метод Ньютона не знайшов кореня.')
+        root_combined = combined_newton_chord_method(f, a, b, eps)
+        if a <= root_combined <= b:
+            print('Комбінований метод:', round(root_combined, 5))
     else:
         print('На цьому відрізку корені відсутні')
