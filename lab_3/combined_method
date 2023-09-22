@@ -13,7 +13,7 @@ def combined_newton_chord_method(f, a, b, eps):
     b_n = b0
     while True:
         a_n_1 = a_n - f(a_n) * (b_n - a_n) / (f(b_n) - f(a_n))
-        и_т_1 = и_т - а(и_т) . вукшмфешму(аб и_тб т=1)
+        b_n_1 = b_n - f(b_n) /derivative(f, b_n, n=1)
         if abs(a_n_1 - b_n_1) < eps:
             return a_n_1
         a_n = a_n_1
