@@ -3,7 +3,7 @@ X1 = math.sqrt(62)#точне число x1
 X2 = 7/22#точне число x2
 x1 = 7.87#наближене число x1
 x2 = 0.318#наближене число x2
-def f(x1,x2,X1,X2):
+def f(x1,x2,X1,X2): 
     absol_err_x1 = abs(X1-x1)
     absol_err_x2 = abs(X2-x2)
     rel_err_x1 = absol_err_x1/abs(X1)
