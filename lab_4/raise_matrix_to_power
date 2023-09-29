@@ -1,0 +1,13 @@
+import numpy as np
+
+matrix = np.array([[5, 0, 0, 0],
+                   [0, -2, 0, 0],
+                   [0, 0, 3, 0],
+                   [0, 0, 0, 2]])
+print("Задана матриця,що підноситься до 2 степеня:\n",matrix)
+
+diagonal = np.diagonal(matrix)
+squared_diagonal = np.square(diagonal)
+np.fill_diagonal(matrix, squared_diagonal)
+
+print("Результат:\n",matrix)
