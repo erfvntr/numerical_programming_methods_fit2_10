@@ -1,0 +1,11 @@
+import numpy as np
+
+A = np.matrix([[2,3,1], [-1,1,0], [1,2,-1]])
+B = np.matrix([[1,2,1],[0,1,2],[3,1,1]])
+print("Матриця A:\n",A)
+print("Матриця B:\n",B)
+
+AB_matrix = A.dot(B)
+BA_matrix = B.dot(A)
+C = AB_matrix - BA_matrix
+print("Матриця C:\n",C)
