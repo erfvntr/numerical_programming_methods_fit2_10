@@ -1,0 +1,13 @@
+import numpy as np
+
+first_matrix = np.array([[3, 0, 7],[-4, 2, 3],[-1, 1, 2]])
+second_matrix = np.array([[1], [2], [4]])
+print("Матриця A:\n",first_matrix)
+print("Матриця B:\n",second_matrix)
+
+# Перевірка розмірностей матриць
+if first_matrix.shape[1] == second_matrix.shape[0]:
+    result = np.dot(first_matrix, second_matrix)
+    print("Результат:\n",result)
+else:
+    print("Множення неможливе")
