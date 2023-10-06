@@ -1,0 +1,16 @@
+import sympy as sp
+x, y = sp.symbols('x y')
+def check(x_val, y_val):
+    f1 = 1.5 - sp.cos(y)
+    f2 = (1 + sp.sin(x - 0.5))/2
+    df1_dx_val = sp.diff(f1, x).evalf(subs={x: x_val, y: y_val})
+    df1_dy_val =sp.diff(f1, y).evalf(subs={x: x_val, y: y_val})
+    df2_dx_val = sp.diff(f2, x).evalf(subs={x: x_val, y: y_val})
+    df2_dy_val = sp.diff(f2, y).evalf(subs={x: x_val, y: y_val})
+    if abs(df1_dx_val) + abs(df2_dx_val) < 1 and abs(df1_dy_val) + abs(df2_dy_val) < 1:
+        print("Метод ітерацій збіжний")
+    else:
+        print("Метод ітерацій не збіжний")
+x_value = 0.7
+y_value = 0.8
+check(x_value, y_value)
