@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+import numpy as np
+x_min, x_max, y_min, y_max = -5, 5, -7, 7
+num = 100
+x = np.linspace(x_min, x_max, num)
+y = np.linspace(y_min, y_max, num)
+first_equation = 1.5 - np.cos(y) 
+second_equation = (1 + np.sin(x - 0.5))/2
+plt.figure(figsize=(10, 10))
+plt.plot(first_equation, y, label='cos(y) + x = 1.5', color='blue')
+plt.plot(x, (np.sin(x - 0.5) + 1) / 2, label='2y - sin(x - 0.5) = 1', color='red')
+plt.xlim([x_min, x_max])
+plt.ylim([y_min, y_max])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Графік системи рівнянь')
+plt.locator_params(axis='x', nbins=20)
+plt.locator_params(axis='y', nbins=30)
+plt.grid(True)
+plt.legend()
+plt.show()
