@@ -1,0 +1,39 @@
+import numpy as np
+from scipy import optimize 
+import math
+x0 = 0.6
+y0 = 0.5
+epsilon = 0.0001
+
+def f1(y):
+    return 1.5 - np.cos(y)
+def f2(x):
+    return (1 + np.sin(x - 0.5))/2
+def simple_iteration(x0, y0, epsilon):
+    x = x0
+    y = y0
+    n = 0
+    while True:
+        y_new = f2(x) 
+        x_new = f1(y)  
+        if abs(x_new - x) < epsilon and abs(y_new - y) < epsilon:
+            break
+        x = x_new
+        y = y_new
+        n += 1
+    print('Метод простої ітерації:')
+    print('x =', x)
+    print('y =', y)
+    print('Кількість ітерацій:', n)
+    
+    return x, y
+
+x_solution, y_solution = simple_iteration(x0, y0, epsilon)
+
+#перевірка коду
+def check_solution(x, y):
+    def system_equations(z):
+        return [math.cos(z[1]) + z[0] - 1.5,2*z[1] - math.sin(z[0] - 0.5) - 1]
+    result = optimize.root(system_equations, [x, y], method='hybr')
+    print('Перевірка :', result.x)
+check_solution(x_solution, y_solution)
