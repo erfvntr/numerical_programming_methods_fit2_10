@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import lagrange
+
+xi = [-4, 0, 3, 4]
+fi = [-15, -11, -8, 25]
+print("Точки задані таблицею:")
+print("xi", end="\t")
+for x in xi:
+    print(x, end="\t")
+print()
+print("f(xi)", end="\t")
+for f in fi:
+    print(f, end="\t")
+print()
+
+def lagrange_interpolation(x, xi, fi):
+    result = 0.0
+    for i in range(len(xi)):
+        yi = fi[i]
+        for j in range(len(xi)):
+            if i != j:
+                yi *= (x - xi[j]) / (xi[i] - xi[j])
+        result += yi
+    return result
+
+print("Значення функції в заданих точках:")
+x_values = [-3, -2, 2, 3.5]
+L_values = [lagrange_interpolation(x, xi, fi) for x in x_values]
+for x, L in zip(x_values, L_values):
+    print(f"L({x}) = {L}")
+x_range = np.linspace(min(xi), max(xi), 500)
+L_range = [lagrange_interpolation(x, xi, fi) for x in x_range]
+plt.figure(figsize=(12, 8))
+plt.plot(xi, fi, "ro", label="Задані таблицею точки")
+plt.plot(x_range, L_range, "b", label="Інтерполяційний багаточлен Лагранжа")
+plt.scatter(x_values, L_values, color="green", label="Набір заданих точок")
+plt.xlabel("x")
+plt.ylabel("L(x)")
+plt.title("Інтерполяційний багаточлен Лагранжа")
+plt.legend()
+plt.grid(True)
+plt.show()
