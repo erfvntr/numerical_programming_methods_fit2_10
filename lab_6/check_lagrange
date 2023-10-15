@@ -1,0 +1,12 @@
+f = lagrange(xi, fi)
+L_for_x_values = [f(x) for x in x_values]
+plt.figure(figsize = (12, 8))
+plt.plot(xi, fi, "ro", label = "Задані таблицею точки")
+plt.plot(x_range, L_range, "m", label = "Інтерполяційний багаточлен Лагранжа")
+plt.scatter(x_values, L_for_x_values, color = "orange", label = "Перевірка в заданих точках")
+plt.title("Інтерполяційний багаточлен Лагранжа.Перевірка")
+plt.grid(True)
+plt.xlabel("x")
+plt.ylabel("L(x)")
+plt.legend()
+plt.show()
