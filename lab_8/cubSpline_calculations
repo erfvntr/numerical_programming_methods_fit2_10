@@ -1,0 +1,45 @@
+import numpy as np
+from scipy.interpolate import CubicSpline
+import matplotlib.pyplot as plt
+
+input_x = np.array([1.4,1.9,2.6,2.8,3.1])
+input_y = np.array([1.63,2.18,1.46,1.17,2.95])
+
+def compute_spline_coefficients(x, y):
+    n = len(x) - 1
+    intervals = np.diff(x)
+    coefficients_a = y
+    alpha_values = np.zeros(n)
+    coefficients_b = np.zeros(n)
+    coefficients_c = np.zeros(n)
+    coefficients_d = np.zeros(n)
+    
+    for i in range(1, n):
+        alpha_values[i] = (3 / intervals[i]) * (coefficients_a[i+1] - coefficients_a[i]) - (3 / intervals[i-1]) * (coefficients_a[i] - coefficients_a[i-1])
+    lambda_values = np.ones(n)
+    beta_values = np.zeros(n)
+    gamma_values = np.zeros(n)
+    for i in range(1, n):
+        lambda_values[i] = 2 * (x[i+1] - x[i-1]) - intervals[i-1] * beta_values[i-1]
+        beta_values[i] = intervals[i] / lambda_values[i]
+        gamma_values[i] = (alpha_values[i] - intervals[i-1] * gamma_values[i-1]) / lambda_values[i]
+    for j in range(n - 2, -1, -1):
+        coefficients_c[j] = gamma_values[j] - beta_values[j] * coefficients_c[j+1]
+        coefficients_b[j] = (coefficients_a[j+1] - coefficients_a[j]) / intervals[j] - intervals[j] * (coefficients_c[j+1] + 2 * coefficients_c[j]) / 3
+        coefficients_d[j] = (coefficients_c[j+1] - coefficients_c[j]) / (3 * intervals[j])
+
+    return coefficients_a, coefficients_b, coefficients_c, coefficients_d
+
+coefficients_a, coefficients_b, coefficients_c, coefficients_d = compute_spline_coefficients(input_x, input_y)
+
+for i in range(len(input_x) - 1):
+    print(f"{i+1}-ий відрізок({input_x[i]};{input_x[i+1]}):")
+    print(f"S_{i}(x) = {coefficients_a[i]} + {coefficients_b[i].round(4)}(x - {input_x[i]}) + {coefficients_c[i].round(4)}(x - {input_x[i]})^2 + {coefficients_d[i].round(4)}(x - {input_x[i]})^3 ")
+
+cubic_spline = CubicSpline(input_x, input_y)
+
+new_x = np.linspace(np.min(input_x), np.max(input_x), 100)
+new_y = cubic_spline(new_x)
+print("Значення сплайна:")
+for i in range(len(new_x)):
+    print(f"x = {new_x[i]:.2f}, y = {new_y[i]:.3f}")
