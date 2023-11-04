@@ -1,0 +1,42 @@
+import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+
+def find_nth_derivative(f, n):
+    for _ in range(n):
+        f = sp.diff(f, x)
+    return f
+x = sp.symbols("x")
+f = sp.sin(2*x + 1) + 2*x
+x0 = 0
+n = 3
+
+for i in range(n + 1):
+    derivative = find_nth_derivative(f, i)
+    derivative_str = "f" + "'" * i 
+    print(f"{derivative_str}(x) = {derivative}")
+
+def taylor_polynom(f, x0, n):
+    taylor = f.subs(x, x0)
+    for i in range(1, n + 1):
+        f = find_nth_derivative(f, 1)
+        taylor += (f.subs(x, x0) / sp.factorial(i)) * (x - x0)**i
+    return taylor
+taylor = taylor_polynom(f, x0, n)
+
+print(f"T({0}) = {sp.N(taylor, 5)}")
+f_x0 = f.subs(x, x0).evalf()
+print(f"f({x0}) = {f_x0}")
+
+x_vals = np.linspace(-2, 2, 100)
+plt.figure(figsize=(8, 6))
+plt.title("Наближення функцій поліномом Тейлора")
+plt.plot(x_vals, [f.subs(x, xi).evalf() for xi in x_vals], label="f(x) = sin(2x+1)+2x",color = "green",linestyle="dashed")
+plt.plot(x_vals, [taylor.subs(x, xi).evalf() for xi in x_vals], label=f"Поліном Тейлора",color = "red")
+plt.locator_params(axis="x", nbins=10) 
+plt.locator_params(axis="y", nbins=25)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.grid(True)
+plt.show()
