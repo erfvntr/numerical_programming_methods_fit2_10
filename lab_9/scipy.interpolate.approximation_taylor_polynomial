@@ -1,0 +1,24 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import approximate_taylor_polynomial
+
+def f(x):
+    return np.sin(2*x + 1) + 2*x
+
+x_vals = np.linspace(-2, 2, 100)
+degree = 3
+scale = 1 
+
+plt.figure(figsize=(8, 6))
+plt.plot(x_vals, f(x_vals), label="f(x) = sin(2x+1)+2x ", color="green", linestyle="dashed")
+taylor = approximate_taylor_polynomial(f, 0, degree, scale)
+print("taylor =", taylor)
+plt.plot(x_vals, taylor(x_vals), label="Поліном Тейлора", color="red")
+plt.locator_params(axis="x", nbins=10)
+plt.locator_params(axis="y", nbins=25)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Многочлен Тейлора")
+plt.legend()
+plt.grid(True)
+plt.show()
