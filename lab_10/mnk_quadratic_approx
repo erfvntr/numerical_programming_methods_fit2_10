@@ -1,0 +1,41 @@
+#МНК наближення параболою
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import least_squares
+
+def func(x):
+    return np.sin(2 * x + 1) + 2 * x
+
+x = np.arange(0.1, 1.1, 0.1)
+y = func(x)
+print("x:", x)
+print("y:", y)
+
+def quadratic_function(a, x):
+    return a[0] * x**2 + a[1] * x + a[2]
+
+def quadratic_approximation(x, y):
+    def fun(a, x, y):
+        return quadratic_function(a, x) - y
+    a0 = np.ones(3) 
+    parabola_approx = least_squares(fun, a0, args=(x, y))
+    return parabola_approx.x
+
+a_quad = quadratic_approximation(x, y)
+x_p = np.linspace(min(x), max(x), 100)
+y_p = quadratic_function(a_quad, x_p)
+print("Коефіцієнти для лінійної апроксимації:")
+print(f"a2: {a_quad[0]:.2f},a1: {a_quad[1]:.2f},a0: {a_quad[2]:.2f}")
+print(f'f(x) ≈ {a_quad[0]:.2f}x^2 + {a_quad[1]:.2f}x + {a_quad[2]:.2f}')
+
+plt.figure(figsize=(8, 6))
+plt.plot(x, y, label="Функція y = sin(2x + 1) + 2x", marker="o", linestyle=" ", color="blue")
+plt.plot(x_p, quadratic_function(a_quad, x_p), label=f"Квадратична апроксимація", color="green")
+plt.locator_params(axis="x", nbins=10)
+plt.locator_params(axis="y", nbins=20)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Наближення функції методом найменших квадратів")
+plt.legend()
+plt.grid(True)
+plt.show()
