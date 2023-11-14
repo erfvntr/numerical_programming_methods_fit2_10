@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def func(x):
+    return np.sin(2 * x + 1) + 2 * x
+x = np.arange(0.1, 1.1, 0.1)
+y = func(x)
+
+print("x:", x)
+print("y:", y)
+
+A_linear = np.vstack([x, np.ones(len(x))]).T
+a_linear, c_linear = np.linalg.lstsq(A_linear, y, rcond=None)[0]
+linear_approximation = a_linear * x + c_linear
+
+print("Коефіцієнти для лінійної апроксимації:")
+print(f"a1: {a_linear:.2f}, a0: {c_linear:.2f}")
+print(f"f(x) ≈ {a_linear:.2f}x + {c_linear:.2f}")
+plt.figure(figsize=(8, 6))
+plt.plot(x, y, label="Функція y = sin(2x + 1) + 2x", marker="o", linestyle=" ", color="blue")
+plt.locator_params(axis="x", nbins=10)
+plt.locator_params(axis="y", nbins=20)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Наближення функції методом найменших квадратів")
+plt.plot(x, linear_approximation, label=f"Лінійна апроксимація ", color="red")
+plt.legend()
+plt.grid(True)
+plt.show()
