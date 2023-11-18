@@ -1,0 +1,31 @@
+import math
+from scipy import integrate
+def integrand_function(x):
+    return math.log10(x**2+2)/(x+1)
+
+def simpsons_rule_integration(a, b, n):
+    h = (b - a) / n
+    result = integrand_function(a) + integrand_function(b)
+    for i in range(1, n):
+        x_i = a + i * h
+        if i % 2 == 0:
+            result += 2 * integrand_function(x_i)
+        else:
+            result += 4 * integrand_function(x_i)
+    return result * h / 3
+
+a = 1.4
+b = 2.2
+n = 8
+epsilon = 0.001
+result = simpsons_rule_integration(a, b, n)
+
+while True:
+    n *= 2
+    previous_result = result
+    result = simpsons_rule_integration(a, b, n)
+    if abs(result - previous_result) <= epsilon:
+        break
+print(f"Метод Сімпсона: {result:.5f}")
+v, err = integrate.quad(integrand_function, 1.4, 2.2)
+print("Перевірка методу:", round(v, 5))
